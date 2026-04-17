@@ -84,6 +84,15 @@ function setupProgress() {
 function setupReveals() {
   const items = document.querySelectorAll(".reveal");
   const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  const revealOptions = isMobile
+    ? {
+        threshold: 0,
+        rootMargin: "0px 0px 35% 0px"
+      }
+    : {
+        threshold: 0.18,
+        rootMargin: "0px 0px -10% 0px"
+      };
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -93,10 +102,7 @@ function setupReveals() {
         }
       });
     },
-    {
-      threshold: isMobile ? 0.06 : 0.18,
-      rootMargin: isMobile ? "0px 0px 20% 0px" : "0px 0px -10% 0px"
-    }
+    revealOptions
   );
 
   items.forEach((item) => observer.observe(item));
