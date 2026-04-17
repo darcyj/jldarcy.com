@@ -83,16 +83,11 @@ function setupProgress() {
 
 function setupReveals() {
   const items = document.querySelectorAll(".reveal");
-  const isMobile = window.matchMedia("(max-width: 760px)").matches;
-  const revealOptions = isMobile
-    ? {
-        threshold: 0,
-        rootMargin: "0px 0px 35% 0px"
-      }
-    : {
-        threshold: 0.18,
-        rootMargin: "0px 0px -10% 0px"
-      };
+  const isCompactViewport = window.matchMedia("(max-width: 960px)").matches;
+  const revealOptions = {
+    threshold: 0,
+    rootMargin: isCompactViewport ? "0px 0px 260px 0px" : "0px 0px 120px 0px"
+  };
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
