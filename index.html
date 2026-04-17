@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="monokai">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>John L. Darcy, PhD | Bioinformatics and Biostatistics</title>
+  <meta name="description" content="John L. Darcy, PhD - Senior Scientist (Bioinformatics), computational biologist, and field researcher.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jldarcy.com">
+  <meta property="og:title" content="John L. Darcy, PhD">
+  <meta property="og:description" content="Bioinformatics, biostatistics, multi-omics pipelines, and expedition science.">
+  <meta property="og:image" content="assets/photos/at_canada_term_2016.jpg">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("jld-theme");
+        if (savedTheme === "monokai" || savedTheme === "light") {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        } else {
+          document.documentElement.setAttribute("data-theme", "monokai");
+        }
+      } catch (error) {
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#top">JLD</a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="#intro">Intro</a>
+      <a href="#impact">Impact</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#fieldwork">Fieldwork</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-tools">
+      <label class="theme-switch" for="theme-toggle">
+        <span class="theme-text" id="theme-mode-label" aria-live="polite">Monokai (dark)</span>
+        <input type="checkbox" id="theme-toggle" aria-label="Toggle between Monokai (dark) and Blinding mode">
+        <span class="theme-slider" aria-hidden="true"></span>
+      </label>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel hero" id="intro" data-section="intro">
+      <div class="hero-bg parallax" data-speed="0.22"></div>
+      <div class="hero-gradient"></div>
+      <div class="hero-content reveal">
+        <p class="kicker">Bioinformatics | Biostatistics | Expedition Science</p>
+        <h1>John L. Darcy, PhD</h1>
+        <p class="lead">Senior Scientist (Bioinformatics) building reproducible, production-grade omics workflows and statistical tools for real-world research teams.</p>
+        <div class="hero-actions">
+          <a class="button ghost" href="#publications">View Publications</a>
+          <a class="button ghost" href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="hero-facts reveal">
+        <article>
+          <h3>14+ Years</h3>
+          <p>Cross-disciplinary computational research and software delivery.</p>
+        </article>
+        <article>
+          <h3>20+ R and Shiny Packages</h3>
+          <p>Built production R and R Shiny packages, including several commercialized tools.</p>
+        </article>
+        <article>
+          <h3>44+ Publications</h3>
+          <p>Peer-reviewed contributions across microbiome and omics research.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section" id="impact" data-section="impact">
+      <div class="section-header reveal">
+        <p class="kicker">What I Build</p>
+        <h2>Technical depth with production outcomes</h2>
+      </div>
+      <div class="impact-grid">
+        <article class="card reveal">
+          <h3>Pipeline Engineering</h3>
+          <p>Designed and scaled cloud-native ONT metabarcoding workflows with 65+ amplicons on AWS, from prototype through production delivery.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Performance + Reliability</h3>
+          <p>Reduced QA and QC processing turnaround by 98 percent through automation and reproducible architecture.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Applied Statistical Methods</h3>
+          <p>Improved GSEA performance by about 1.5x while increasing statistical power by up to 20 percent.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Tooling for Scientists</h3>
+          <p>Built multiple production R packages and Shiny tools that make high-dimensional data usable by non-computational stakeholders.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section" id="experience" data-section="experience">
+      <div class="section-header reveal">
+        <p class="kicker">Trajectory</p>
+        <h2>Research, software, and team leadership</h2>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item reveal">
+          <span class="time">2025 - Present</span>
+          <h3>Senior Scientist (Bioinformatics) - Jonah Ventures</h3>
+          <p>Leads production bioinformatics engineering for eDNA and metagenomics workflows, including cloud analytics and customer-facing outputs.</p>
+        </article>
+        <article class="timeline-item reveal">
+          <span class="time">2021 - 2024</span>
+          <h3>Bioinformatics Scientist - Standard BioTools (formerly SomaLogic)</h3>
+          <p>Delivered production analytical software, accelerated assay quality control workflows, and supported cross-functional translational analyses.</p>
+        </article>
+        <article class="timeline-item reveal">
+          <span class="time">2018 - 2021</span>
+          <h3>NIH NLM Computational Biology Fellow - CU Anschutz</h3>
+          <p>Published statistical methods and software for microbiome data, including the R + C++ package <em>specificity</em>.</p>
+        </article>
+        <article class="timeline-item reveal">
+          <span class="time">2017 - 2018</span>
+          <h3>Postdoctoral Researcher (Mycology) - University of Hawaii</h3>
+          <p>Built sequencing pipelines for multi-terabyte ITS datasets and led team projects in ecological genomics.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section" id="education" data-section="education">
+      <div class="section-header reveal">
+        <p class="kicker">Academic Background</p>
+        <h2>Education and Postdoctoral Training</h2>
+      </div>
+      <div class="impact-grid">
+        <article class="card reveal">
+          <span class="time">2018 - 2021</span>
+          <h3>NIH NLM Computational Biology Postdoctoral Fellowship</h3>
+          <p>University of Colorado Anschutz Medical Campus</p>
+          <p>Developed and published statistical methods and software for microbiome analysis, including the R and C++ package <em>specificity</em>.</p>
+        </article>
+        <article class="card reveal">
+          <span class="time">2017 - 2018</span>
+          <h3>Postdoctoral Researcher (Mycology)</h3>
+          <p>University of Hawaii at Manoa</p>
+          <p>Built multi-terabyte sequencing pipelines and applied spatial and machine learning approaches to ecological genomics.</p>
+        </article>
+        <article class="card reveal">
+          <span class="time">2017</span>
+          <h3>PhD, Ecology and Evolutionary Biology</h3>
+          <p>University of Colorado Boulder</p>
+          <p>Completed doctoral research in microbial ecology, biogeography, and model-driven analysis of extreme and glacial ecosystems.</p>
+        </article>
+        <article class="card reveal">
+          <span class="time">2020</span>
+          <h3>Certificate, Protected Health Information (PHI) Use</h3>
+          <p>University of Colorado Anschutz Medical Campus</p>
+          <p>Formal training in compliant handling of sensitive clinical data for analysis workflows and research operations.</p>
+        </article>
+        <article class="card reveal">
+          <span class="time">2010</span>
+          <h3>BA, Molecular, Cellular, and Developmental Biology</h3>
+          <p>University of Colorado Boulder</p>
+          <p>Built foundational training in molecular biology and experimental science that informs downstream computational work.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section fieldwork" id="fieldwork" data-section="fieldwork">
+      <div class="section-header reveal">
+        <p class="kicker">Expedition Work</p>
+        <h2>Science in places most people only see in documentaries</h2>
+      </div>
+      <div class="location-strip reveal" aria-label="Field locations">
+        <span>Antarctica - McMurdo Dry Valleys</span>
+        <span>Atacama Andes - Volcan Llullaillaco</span>
+        <span>Peruvian Andes - Puca Glacier</span>
+        <span>Alaska - Denali National Park</span>
+        <span>Hawaii - Native montane ecosystems</span>
+      </div>
+      <div class="photo-grid">
+        <figure class="photo-card large reveal">
+          <img loading="lazy" src="assets/photos/at_canada_term_2016.jpg" alt="John standing at the terminus of Canada Glacier in Antarctica.">
+          <figcaption>Canada Glacier, Antarctica (2016)</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img loading="lazy" src="assets/photos/ant_flyover_2017.jpg" alt="Aerial view over the Transantarctic Mountains.">
+          <figcaption>Transantarctic Mountains flyover (2017)</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img loading="lazy" src="assets/photos/boots_cryohole_2016.jpg" alt="Field boots at a cryoconite hole on Antarctic glacier ice.">
+          <figcaption>Cryoconite hole sampling, Antarctica (2017)</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img loading="lazy" src="assets/photos/blueice_2016.jpg" alt="Blue ice surface in Antarctica.">
+          <figcaption>Lake Hoare blue ice, Antarctica (2016)</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img loading="lazy" src="assets/photos/penitentes_2016.jpg" alt="Researchers standing among penitentes in the Chilean Andes.">
+          <figcaption>Penitentes on Llullaillaco, Chile (2016)</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img loading="lazy" src="assets/photos/hike2toklat_2014.jpg" alt="Hike toward Toklat Glacier in Denali National Park.">
+          <figcaption>Toklat Glacier approach, Alaska (2014)</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img loading="lazy" src="assets/photos/desertdriving_2016.jpg" alt="Field convoy crossing the Atacama desert.">
+          <figcaption>Atacama field transit, Chile (2016)</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="panel section publications" id="publications" data-section="publications">
+      <div class="section-header reveal">
+        <p class="kicker">Publication Record</p>
+        <h2>Publications and Research Output</h2>
+        <p class="section-copy">This list is generated from <code>data/publications.bib</code>. Edit that file to update publications.</p>
+      </div>
+      <div class="pub-controls reveal">
+        <label>
+          View
+          <select id="pub-role">
+            <option value="recent" selected>Recent (10)</option>
+            <option value="all">All</option>
+            <option value="firstauthor">First-author</option>
+            <option value="coauthor">Co-author</option>
+          </select>
+        </label>
+        <label>
+          Year
+          <select id="pub-year">
+            <option value="all">All years</option>
+          </select>
+        </label>
+        <label>
+          Search
+          <input id="pub-search" type="search" placeholder="title, journal, author">
+        </label>
+      </div>
+      <div class="pub-toolbar reveal">
+        <p id="pub-count" aria-live="polite">Loading publications...</p>
+        <a class="button ghost" href="data/publications.bib" download>Download BibTeX</a>
+      </div>
+      <div id="publications-list" class="pub-list" aria-live="polite"></div>
+    </section>
+
+    <section class="panel section contact" id="contact" data-section="contact">
+      <div class="section-header reveal">
+        <p class="kicker">Contact and Documents</p>
+        <h2>Get in touch with me</h2>
+      </div>
+      <div class="contact-grid">
+        <article class="card reveal">
+          <h3>Links</h3>
+          <ul>
+            <li><a href="mailto:John.L.Darcy@gmail.com">John.L.Darcy@gmail.com</a></li>
+            <li><a href="https://github.com/darcyj" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="https://scholar.google.com/citations?user=z24F3PYAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a></li>
+            <li><a href="https://www.linkedin.com/in/john-darcy/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          </ul>
+        </article>
+        <article class="card reveal">
+          <h3>Downloads</h3>
+          <ul>
+            <li><a href="assets/docs/jld_cv.pdf" download>Curriculum Vitae (PDF)</a></li>
+            <li><a href="assets/docs/jld_resume.pdf" download>Resume (PDF)</a></li>
+            <li><a href="data/publications.bib" download>Publications BibTeX</a></li>
+          </ul>
+        </article>
+      </div>
+      <footer class="site-footer reveal">
+        <p><span id="year"></span> John L. Darcy, PhD. Built for modern browsers, optimized for mobile and desktop.</p>
+      </footer>
+    </section>
+  </main>
+
+  <div class="lightbox" id="photo-lightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded photo viewer">
+    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close photo viewer">&times;</button>
+    <button class="lightbox-nav prev" id="lightbox-prev" type="button" aria-label="Previous photo">&#10094;</button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-image" alt="">
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+    <button class="lightbox-nav next" id="lightbox-next" type="button" aria-label="Next photo">&#10095;</button>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
