@@ -539,7 +539,7 @@ function normalizeAuthors(authorText) {
     .replace(/\s+/g, " ")
     .trim();
 
-  return cleaned.replace(/(Darcy\s*,?\s*(John\s*L\.?|J\.?\s*L\.?|JL)?)/gi, "<strong>$1</strong>");
+  return cleaned.replace(/(Darcy\s*,?\s*(John\s*L\.?|J\.?\s*L\.?|JL)?)/gi, '<strong class="author-self">$1</strong>');
 }
 
 function toNumberYear(value) {
@@ -547,14 +547,26 @@ function toNumberYear(value) {
   return Number.isFinite(year) ? year : 0;
 }
 
-function publicationRole(entry) {
+const KNOWN_TAGS = ["firstauthor", "coauthor", "chapter", "preprint", "letter"];
+
+const TAG_LABELS = {
+  firstauthor: "first-author",
+  coauthor: "co-author",
+  chapter: "book chapter",
+  preprint: "preprint",
+  letter: "letter"
+};
+
+function publicationTags(entry) {
   const keywords = (entry.keywords || "").toLowerCase();
-  if (keywords.includes("firstauthor")) {
-    return "firstauthor";
-  }
-  if (keywords.includes("coauthor")) {
-    return "coauthor";
-  }
+  return KNOWN_TAGS.filter((tag) => keywords.includes(tag));
+}
+
+function publicationRole(entry) {
+  // Backwards-compatible single-role: used by filter logic.
+  const tags = publicationTags(entry);
+  if (tags.includes("firstauthor")) return "firstauthor";
+  if (tags.includes("coauthor")) return "coauthor";
   return "other";
 }
 
@@ -584,20 +596,28 @@ function renderPublications(entries) {
   container.innerHTML = entries
     .map((entry) => {
       const year = toNumberYear(entry.year) || "n.d.";
-      const role = publicationRole(entry);
       const venue = entry.journal || entry.booktitle || entry.publisher || "Venue not listed";
       const title = entry.title || "Untitled";
       const authors = normalizeAuthors(entry.author || "");
       const doi = entry.doi ? `https://doi.org/${entry.doi.replace(/^https?:\/\/doi\.org\//i, "")}` : "";
       const url = entry.url || "";
 
+      const tags = publicationTags(entry);
+      const tagBadges = tags.length
+        ? tags.map((t) => `<span class="tag tag-${t}">${TAG_LABELS[t] || t}</span>`).join("")
+        : `<span class="tag">${entry.type || "publication"}</span>`;
+      const titleLink = doi || url;
+      const titleHtml = titleLink
+        ? `<a href="${titleLink}" target="_blank" rel="noopener noreferrer">${title}</a>`
+        : title;
+
       return `
         <article class="pub-card reveal visible">
-          <h3>${title}</h3>
+          <h3>${titleHtml}</h3>
           <p class="pub-meta">${authors}</p>
           <p class="pub-meta">${venue} | ${year}</p>
           <div class="pub-extra">
-            <span class="tag">${role === "other" ? entry.type : role.replace("author", "-author")}</span>
+            ${tagBadges}
             ${doi ? `<a href="${doi}" target="_blank" rel="noopener noreferrer">DOI</a>` : ""}
             ${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">Link</a>` : ""}
           </div>
@@ -621,8 +641,12 @@ function applyPublicationFilters() {
       return yearMatch && searchMatch;
     }
 
-    const roleMatch = role === "all" || publicationRole(entry) === role;
-    return roleMatch && yearMatch && searchMatch;
+    const tags = publicationTags(entry);
+    let tagMatch;
+    if (role === "all") tagMatch = true;
+    else if (role === "nopreprint") tagMatch = !tags.includes("preprint");
+    else tagMatch = tags.includes(role);
+    return tagMatch && yearMatch && searchMatch;
   });
 
   if (role === "recent") {
@@ -709,6 +733,28 @@ async function loadPublications() {
   }
 }
 
+async function loadHeroStats() {
+  try {
+    const res = await fetch("data/stats.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const stats = await res.json();
+    const years = document.getElementById("stat-years");
+    const pubs = document.getElementById("stat-pubs");
+    const hIndex = document.getElementById("stat-h-index");
+    if (years && Number.isFinite(stats.years_active)) {
+      years.textContent = `${stats.years_active}+ Years`;
+    }
+    if (pubs && Number.isFinite(stats.publications)) {
+      pubs.textContent = `${stats.publications}+ Publications`;
+    }
+    if (hIndex && Number.isFinite(stats.h_index)) {
+      hIndex.textContent = stats.h_index;
+    }
+  } catch (err) {
+    console.warn("hero stats load failed:", err);
+  }
+}
+
 function init() {
   setupThemeToggle();
   setupNav();
@@ -718,6 +764,7 @@ function init() {
   setupParallax();
   setupPhotoLightbox();
   loadPublications();
+  loadHeroStats();
 
   const year = document.getElementById("year");
   year.textContent = new Date().getFullYear();

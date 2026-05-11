@@ -67,7 +67,7 @@
       </div>
       <div class="hero-facts reveal">
         <article>
-          <h3>14+ Years</h3>
+          <h3 id="stat-years">14+ Years</h3>
           <p>Cross-disciplinary computational research and software delivery.</p>
         </article>
         <article>
@@ -75,8 +75,8 @@
           <p>Production R and R Shiny packages, including several commercialized tools.</p>
         </article>
         <article>
-          <h3>53+ Publications</h3>
-          <p>Peer-reviewed contributions across microbiome and omics research; h-index 29.</p>
+          <h3 id="stat-pubs">53+ Publications</h3>
+          <p>Peer-reviewed contributions across microbiome and omics research; h-index <span id="stat-h-index">29</span>.</p>
         </article>
       </div>
     </section>
@@ -200,8 +200,12 @@
           <select id="pub-role">
             <option value="recent" selected>Recent (10)</option>
             <option value="all">All</option>
+            <option value="nopreprint">No preprints</option>
             <option value="firstauthor">First-author</option>
             <option value="coauthor">Co-author</option>
+            <option value="chapter">Book chapter</option>
+            <option value="preprint">Preprint</option>
+            <option value="letter">Letter</option>
           </select>
         </label>
         <label>
