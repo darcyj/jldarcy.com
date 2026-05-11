@@ -146,57 +146,186 @@ function setupParallax() {
   window.addEventListener("scroll", () => window.requestAnimationFrame(update), { passive: true });
 }
 
-function setupPhotoLightbox() {
-  const cards = Array.from(document.querySelectorAll(".photo-grid .photo-card"));
+function photosDataUrls() {
+  const current = new URL(window.location.href);
+  const candidates = [
+    "data/photos.json",
+    "./data/photos.json",
+    new URL("data/photos.json", current).href
+  ];
+  if (window.location.origin && window.location.origin !== "null") {
+    candidates.push(`${window.location.origin}/data/photos.json`);
+    candidates.push(`${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}data/photos.json`);
+  }
+  return [...new Set(candidates)];
+}
+
+async function fetchPhotosData() {
+  let lastError;
+  for (const url of photosDataUrls()) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) {
+        lastError = new Error(`HTTP ${res.status} at ${url}`);
+        continue;
+      }
+      return await res.json();
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error("Could not load photos.json");
+}
+
+function photoSrc(photo) {
+  return `assets/photos/${photo.filename}`;
+}
+
+function formatPhotoMeta(photo) {
+  return [photo.location_minor, photo.location_major, photo.year]
+    .filter(Boolean)
+    .join(" · ");
+}
+
+function formatLightboxCaption(photo) {
+  const meta = formatPhotoMeta(photo);
+  const text = photo.caption || "";
+  return (
+    (text ? `<span class="lightbox-caption-text">${text}</span>` : "") +
+    (meta ? `<span class="lightbox-caption-meta">${meta}</span>` : "")
+  );
+}
+
+function createPhotoCard(photo, onOpen) {
+  const fig = document.createElement("figure");
+  fig.className = "photo-card" + (photo.feature ? " large" : "");
+  fig.setAttribute("role", "button");
+  fig.setAttribute("tabindex", "0");
+  fig.setAttribute("aria-label", photo.caption || photo.location_minor || "Open photo");
+
+  const img = document.createElement("img");
+  img.loading = "lazy";
+  img.src = photoSrc(photo);
+  img.alt = photo.caption || "";
+  fig.appendChild(img);
+
+  const cap = document.createElement("figcaption");
+  cap.textContent = `${photo.location_minor || ""}${photo.year ? ` (${photo.year})` : ""}`.trim();
+  fig.appendChild(cap);
+
+  fig.addEventListener("click", onOpen);
+  fig.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onOpen();
+    }
+  });
+  return fig;
+}
+
+function createSeeAllTile(totalCount, onOpen) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "photo-card see-all";
+  btn.id = "photo-grid-see-all";
+  btn.setAttribute("aria-label", "Open photo gallery with every expedition photo");
+  btn.innerHTML =
+    '<span class="see-all-inner">' +
+      '<span class="see-all-label">See all photos</span>' +
+      `<span class="see-all-count">${totalCount} photos in the field</span>` +
+    '</span>';
+  btn.addEventListener("click", onOpen);
+  return btn;
+}
+
+async function setupPhotoLightbox() {
+  const grid = document.getElementById("photo-grid");
   const lightbox = document.getElementById("photo-lightbox");
   const image = document.getElementById("lightbox-image");
   const caption = document.getElementById("lightbox-caption");
   const closeButton = document.getElementById("lightbox-close");
   const prevButton = document.getElementById("lightbox-prev");
   const nextButton = document.getElementById("lightbox-next");
+  const strip = document.getElementById("lightbox-strip");
+  const uiToggle = document.getElementById("lightbox-ui-toggle");
+  const locationButtons = Array.from(document.querySelectorAll(".location-strip [data-location-major]"));
 
-  if (!cards.length || !lightbox || !image || !caption || !closeButton || !prevButton || !nextButton) {
+  if (!grid || !lightbox || !image || !caption || !closeButton || !prevButton || !nextButton) {
     return;
   }
 
-  const photos = cards
-    .map((card) => {
-      const cardImage = card.querySelector("img");
-      const cardCaption = card.querySelector("figcaption");
-      if (!cardImage) {
-        return null;
-      }
-
-      return {
-        src: cardImage.getAttribute("src") || "",
-        alt: cardImage.getAttribute("alt") || "Expedition photo",
-        caption: cardCaption ? cardCaption.textContent.trim() : ""
-      };
-    })
-    .filter(Boolean);
-
-  if (!photos.length) {
+  let photos;
+  try {
+    photos = await fetchPhotosData();
+  } catch (err) {
+    console.warn("Photo data failed to load:", err);
+    grid.removeAttribute("aria-busy");
+    return;
+  }
+  if (!Array.isArray(photos) || !photos.length) {
+    grid.removeAttribute("aria-busy");
     return;
   }
 
+  let currentSet = photos;
   let currentIndex = 0;
   let isOpen = false;
+  let stripItems = [];
 
-  const renderPhoto = (index) => {
-    const safeIndex = (index + photos.length) % photos.length;
-    currentIndex = safeIndex;
-    const item = photos[safeIndex];
-    image.src = item.src;
-    image.alt = item.alt;
-    caption.textContent = item.caption;
+  const rebuildStrip = (set) => {
+    if (!strip) return;
+    strip.replaceChildren();
+    stripItems = set.map((photo, index) => {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "lightbox-strip-item";
+      item.setAttribute("role", "tab");
+      item.setAttribute("aria-label", photo.caption || formatPhotoMeta(photo) || `Photo ${index + 1}`);
+      const thumb = document.createElement("img");
+      thumb.src = photoSrc(photo);
+      thumb.alt = "";
+      thumb.loading = "lazy";
+      item.appendChild(thumb);
+      item.addEventListener("click", () => renderPhoto(index));
+      strip.appendChild(item);
+      return item;
+    });
   };
 
-  const openLightbox = (index) => {
-    renderPhoto(index);
+  const renderPhoto = (index) => {
+    if (!currentSet.length) return;
+    const safeIndex = (index + currentSet.length) % currentSet.length;
+    currentIndex = safeIndex;
+    const photo = currentSet[safeIndex];
+    image.src = photoSrc(photo);
+    image.alt = photo.caption || "Expedition photo";
+    caption.innerHTML = formatLightboxCaption(photo);
+    stripItems.forEach((node, i) => {
+      if (i === safeIndex) {
+        node.setAttribute("aria-current", "true");
+        if (!lightbox.hidden) {
+          node.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        }
+      } else {
+        node.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  const openLightbox = (set, index = 0) => {
+    currentSet = set && set.length ? set : photos;
+    rebuildStrip(currentSet);
     isOpen = true;
     lightbox.hidden = false;
     lightbox.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
+    renderPhoto(index);
+    requestAnimationFrame(() => {
+      const activeThumb = stripItems[currentIndex];
+      if (activeThumb) {
+        activeThumb.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+      }
+    });
     closeButton.focus();
   };
 
@@ -206,36 +335,51 @@ function setupPhotoLightbox() {
     lightbox.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
     image.removeAttribute("src");
+    // Reset UI chrome to visible for the next open
+    lightbox.classList.remove("ui-hidden");
+    if (uiToggle) {
+      uiToggle.setAttribute("aria-pressed", "false");
+      uiToggle.setAttribute("aria-label", "Hide controls");
+    }
   };
 
-  const showPrevious = () => {
-    renderPhoto(currentIndex - 1);
+  const toggleUi = () => {
+    const hidden = lightbox.classList.toggle("ui-hidden");
+    if (uiToggle) {
+      uiToggle.setAttribute("aria-pressed", hidden ? "true" : "false");
+      uiToggle.setAttribute("aria-label", hidden ? "Show controls" : "Hide controls");
+    }
   };
 
-  const showNext = () => {
-    renderPhoto(currentIndex + 1);
-  };
+  // Render visible photo cards into the grid
+  grid.replaceChildren();
+  photos.forEach((photo, fullIdx) => {
+    if (photo.hidden) return;
+    const card = createPhotoCard(photo, () => openLightbox(photos, fullIdx));
+    grid.appendChild(card);
+  });
+  grid.appendChild(createSeeAllTile(photos.length, () => openLightbox(photos, 0)));
+  grid.removeAttribute("aria-busy");
 
-  cards.forEach((card, index) => {
-    card.setAttribute("role", "button");
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("aria-label", `Open photo ${index + 1} of ${photos.length}`);
-
-    card.addEventListener("click", () => {
-      openLightbox(index);
-    });
-
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openLightbox(index);
-      }
-    });
+  // Location-strip filters: click a pill to open the lightbox with photos from that major location only
+  locationButtons.forEach((btn) => {
+    const major = btn.getAttribute("data-location-major");
+    const subset = photos.filter((p) => p.location_major === major);
+    if (!subset.length) {
+      btn.disabled = true;
+      btn.setAttribute("aria-disabled", "true");
+      return;
+    }
+    btn.setAttribute("aria-label", `Open ${subset.length} photo${subset.length === 1 ? "" : "s"} from ${major}`);
+    btn.addEventListener("click", () => openLightbox(subset, 0));
   });
 
   closeButton.addEventListener("click", closeLightbox);
-  prevButton.addEventListener("click", showPrevious);
-  nextButton.addEventListener("click", showNext);
+  prevButton.addEventListener("click", () => renderPhoto(currentIndex - 1));
+  nextButton.addEventListener("click", () => renderPhoto(currentIndex + 1));
+  if (uiToggle) {
+    uiToggle.addEventListener("click", toggleUi);
+  }
 
   lightbox.addEventListener("click", (event) => {
     if (event.target === lightbox) {
@@ -244,23 +388,10 @@ function setupPhotoLightbox() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (!isOpen) {
-      return;
-    }
-
-    if (event.key === "Escape") {
-      closeLightbox();
-      return;
-    }
-
-    if (event.key === "ArrowLeft") {
-      showPrevious();
-      return;
-    }
-
-    if (event.key === "ArrowRight") {
-      showNext();
-    }
+    if (!isOpen) return;
+    if (event.key === "Escape") { closeLightbox(); return; }
+    if (event.key === "ArrowLeft") { renderPhoto(currentIndex - 1); return; }
+    if (event.key === "ArrowRight") { renderPhoto(currentIndex + 1); }
   });
 }
 

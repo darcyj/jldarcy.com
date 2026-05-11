@@ -1,0 +1,108 @@
+[
+  {
+    "filename": "at_canada_term_2016.jpg",
+    "location_major": "Antarctica",
+    "location_minor": "McMurdo Dry Valleys",
+    "year": 2016,
+    "caption": "Standing at the terminus of the Canada Glacier, McMurdo Dry Valleys, Antarctica",
+    "feature": true
+  },
+  {
+    "filename": "ant_flyover_2017.jpg",
+    "location_major": "Antarctica",
+    "location_minor": "Transantarctic Mountains",
+    "year": 2017,
+    "caption": "Flying over the Transantarctic Mountains in an LC130"
+  },
+  {
+    "filename": "boots_cryohole_2016.jpg",
+    "location_major": "Antarctica",
+    "location_minor": "McMurdo Dry Valleys",
+    "year": 2016,
+    "caption": "Boot selfie over a cryoconite hole on Commonwealth Glacier"
+  },
+  {
+    "filename": "blueice_2016.jpg",
+    "location_major": "Antarctica",
+    "location_minor": "Lake Hoare",
+    "year": 2016,
+    "caption": "Blue ice on the surface of frozen Lake Hoare"
+  },
+  {
+    "filename": "penitentes_2016.jpg",
+    "location_major": "Chilean Andes",
+    "location_minor": "Volcán Llullaillaco",
+    "year": 2016,
+    "caption": "Standing among penitentes with Lara Vimercati"
+  },
+  {
+    "filename": "hike2toklat_2014.jpg",
+    "location_major": "Alaska",
+    "location_minor": "Denali NP",
+    "year": 2014,
+    "caption": "Hiking through a braided river to the Middle-Fork Toklat Glacier."
+  },
+  {
+    "filename": "desertdriving_2016.jpg",
+    "location_major": "Chilean Andes",
+    "location_minor": "Atacama Desert",
+    "year": 2016,
+    "caption": "Driving across the Atacama Desert to reach the Llullaillaco field site"
+  },
+  {
+    "filename": "llullaillaco_2016.jpg",
+    "location_major": "Chilean Andes",
+    "location_minor": "Volcán Llullaillaco",
+    "year": 2016,
+    "caption": "View of Llullaillaco summit from base camp at 5000 masl",
+    "hidden": true
+  },
+  {
+    "filename": "perudrone_2015.jpg",
+    "location_major": "Peru",
+    "location_minor": "Cordillera Willkanuta",
+    "year": 2015,
+    "caption": "Flying an NDVI-sensing drone near the Puca Glacier's terminus",
+    "hidden": true
+  },
+  {
+    "filename": "prestonmars_2016.jpg",
+    "location_major": "Chilean Andes",
+    "location_minor": "Volcán Llullaillaco",
+    "year": 2016,
+    "caption": "Preston Sowell scouting Mars-like terrain on the flanks of Llullaillaco",
+    "hidden": true
+  },
+  {
+    "filename": "mossbone_2014.jpg",
+    "location_major": "Alaska",
+    "location_minor": "Denali NP",
+    "year": 2014,
+    "caption": "Moss growing on a caribou bone, demonstrating nutrient limitation",
+    "hidden": true
+  },
+  {
+    "filename": "hikein_2012.JPG",
+    "location_major": "Peru",
+    "location_minor": "Cordillera Willkanuta",
+    "year": 2012,
+    "caption": "My PhD advisor, Steve, admiring Nevado Chumpi and the Puca Glacier",
+    "hidden": true
+  },
+  {
+    "filename": "air_sampling_wbg.jpg",
+    "location_major": "Hawaii",
+    "location_minor": "Waimea Botanic Gardens, O‘ahu",
+    "year": 2018,
+    "caption": "3D-printed eDNA air sampling device I designed with Sean Swift, autonomously doing its job in the forest",
+    "hidden": true
+  },
+  {
+    "filename": "pololu.jpg",
+    "location_major": "Hawaii",
+    "location_minor": "Pololu Valley, Big Island",
+    "year": 2018,
+    "caption": "Hiking through dense bamboo on a sampling transect near Pololu Valley",
+    "hidden": true
+  }
+]
